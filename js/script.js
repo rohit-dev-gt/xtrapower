@@ -14,10 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Stage Products Swiper
     // "showing 3 slides at once but left and right slide should show cutted and middle one should be little zoom"
+    // Stage Products Swiper
+    // "showing 3 slides at once but left and right slide should show cutted and middle one should be little zoom"
     const stageSwiper = new Swiper('.stage-swiper', {
         slidesPerView: 1.2, // Mobile default
         centeredSlides: true,
-        spaceBetween: 30,
+        spaceBetween: 80, // Increased gap
         initialSlide: 1, // Start with second slide active
         loop: true,
         breakpoints: {
@@ -45,8 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
         spaceBetween: 20,
         loop: true,
         navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+            nextEl: '.top-products-nav .swiper-button-next',
+            prevEl: '.top-products-nav .swiper-button-prev',
         },
         breakpoints: {
             576: { slidesPerView: 2 },
@@ -56,18 +58,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Reviews Swiper
+    // Reviews Swiper
     const reviewsSwiper = new Swiper('.reviews-swiper', {
-        slidesPerView: 1,
-        spaceBetween: 30,
+        slidesPerView: 1.2,
+        centeredSlides: true,
+        spaceBetween: 10,
         loop: true,
         pagination: {
             el: '.swiper-pagination',
             clickable: true,
         },
         breakpoints: {
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 }
+            768: {
+                slidesPerView: 2.5,
+                centeredSlides: true,
+                spaceBetween: 20
+            },
+            1024: {
+                slidesPerView: 4,
+                centeredSlides: true,
+                spaceBetween: 20
+            }
         }
+    });
+
+    // Read More / Read Less Logic for Reviews
+    document.querySelectorAll('.read-more-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const card = this.closest('.review-card');
+            card.classList.toggle('expanded');
+
+            if (card.classList.contains('expanded')) {
+                this.textContent = 'Read Less';
+            } else {
+                this.textContent = 'Read More';
+            }
+
+            // Optional: Update swiper to handle height change if needed
+            // reviewsSwiper.update(); 
+        });
     });
 
     // Video Modal Logic
@@ -76,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.querySelector('.close-modal');
     const iframe = document.getElementById('youtube-video');
     // Example video ID, replace with actual
-    const videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
+    const videoUrl = "https://www.youtube.com/embed/p-1_Q7ETC1E?autoplay=1&mute=1";
 
     playBtn.addEventListener('click', () => {
         modal.style.display = 'block';
