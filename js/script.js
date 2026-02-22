@@ -195,12 +195,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Toggle icon
             const icon = item.querySelector('.toggle-icon');
-            if (item.classList.contains('active')) {
-                icon.textContent = '-';
-            } else {
-                icon.textContent = '+';
-            }
         });
     });
 
+});
+
+// Product Gallery Swiper
+document.addEventListener('DOMContentLoaded', function () {
+    const productSwiper = new Swiper('.product-main-swiper', {
+        loop: false,
+        navigation: {
+            nextEl: '.product-nav-next',
+            prevEl: '.product-nav-prev',
+        },
+        on: {
+            slideChange: function () {
+                // Update active thumbnail
+                const thumbnails = document.querySelectorAll('.product-gallery .thumbnail');
+                thumbnails.forEach(thumb => thumb.classList.remove('active-thumb'));
+                if (thumbnails[this.activeIndex]) {
+                    thumbnails[this.activeIndex].classList.add('active-thumb');
+                }
+            }
+        }
+    });
+
+    const thumbnails = document.querySelectorAll('.product-gallery .thumbnail');
+    thumbnails.forEach((thumb, index) => {
+        thumb.addEventListener('click', function () {
+            productSwiper.slideTo(index);
+        });
+    });
 });
