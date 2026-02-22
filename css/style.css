@@ -56,14 +56,19 @@ ul {
 
 /* Header Details */
 #main-header {
+
     position: fixed;
-    top: 0;
+    top: 50px;
     left: 0;
     width: 100%;
     z-index: 1000;
     transition: all 0.3s ease;
     background: transparent;
     padding-top: 20px;
+}
+
+#main-header.scrolled {
+    top: 0;
 }
 
 #main-header:not(.scrolled) .top-bar {
@@ -301,6 +306,7 @@ ul {
 .hero-section {
     position: relative;
     height: 700px;
+    padding: 30px;
 }
 
 .hero-section .swiper {
@@ -309,6 +315,10 @@ ul {
 
 .hero-content {
     color: white;
+}
+
+.hero-swiper {
+    border-radius: 50px;
 }
 
 .hero-swiper .swiper-slide {
