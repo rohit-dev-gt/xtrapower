@@ -56,11 +56,46 @@ ul {
 
 /* Header Details */
 #main-header {
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 1000;
+    transition: all 0.3s ease;
+    background: transparent;
+    padding-top: 20px;
+}
+
+#main-header:not(.scrolled) .top-bar {
+    display: none;
+}
+
+#main-header:not(.scrolled) .custom-navbar {
+    background: #fff;
+    max-width: 1200px;
+    width: 95%;
+    margin: 0 auto;
+    border-radius: 50px;
+    padding: 5px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#main-header.scrolled {
+    background: #fff;
+    padding-top: 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+#main-header.scrolled .top-bar {
+    display: block;
+}
+
+#main-header.scrolled .custom-navbar {
+    padding: 10px 0;
+    border-radius: 0;
+    box-shadow: none;
+    max-width: 100%;
 }
 
 .top-bar {
@@ -127,6 +162,12 @@ ul {
     height: 80px;
     width: auto;
     margin-top: -30px;
+    transition: all 0.3s ease;
+}
+
+#main-header:not(.scrolled) .logo img {
+    height: 60px;
+    margin-top: 0;
 }
 
 .nav-links {
@@ -259,7 +300,7 @@ ul {
 /* Hero Section */
 .hero-section {
     position: relative;
-    height: 600px;
+    height: 700px;
 }
 
 .hero-section .swiper {
@@ -272,6 +313,7 @@ ul {
 
 .hero-swiper .swiper-slide {
     position: relative;
+    padding-top: 100px;
 }
 
 /* Overlay gradient for better text visibility */
@@ -488,10 +530,16 @@ ul {
     font-size: 56px;
     line-height: 1.2;
     margin-bottom: 20px;
+    word-wrap: break-word;
 }
 
 .text-muted {
-    color: #ccc;
+    color: rgb(33 37 41 / 27%);
+}
+
+.gsap-char {
+    display: inline;
+    /* gsaps handles the color transition */
 }
 
 .farmers-grid {

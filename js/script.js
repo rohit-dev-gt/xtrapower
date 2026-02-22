@@ -1,5 +1,63 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Header Scroll Logic
+    const mainHeader = document.getElementById('main-header');
+    if (mainHeader) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                mainHeader.classList.add('scrolled');
+            } else {
+                mainHeader.classList.remove('scrolled');
+            }
+        });
+        // Call once on load to set initial state
+        if (window.scrollY > 100) {
+            mainHeader.classList.add('scrolled');
+        }
+    }
+
+    // GSAP Scroll Text Animation
+    const scrollText = document.getElementById('gsap-scroll-text');
+    if (scrollText && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const originalHTML = scrollText.innerHTML;
+        // Basic split: first replace <br> with a special marker
+        const textWithTokens = originalHTML.replace(/<br\s*\/?>/gi, '||br||');
+        scrollText.innerHTML = '';
+
+        for (let i = 0; i < textWithTokens.length; i++) {
+            // Check for marker
+            if (textWithTokens.substring(i, i + 6) === '||br||') {
+                scrollText.appendChild(document.createElement('br'));
+                i += 5; // skip the rest of the marker
+            } else {
+                const char = textWithTokens[i];
+                if (char === ' ') {
+                    // Just append a space
+                    scrollText.appendChild(document.createTextNode(' '));
+                } else {
+                    const charSpan = document.createElement('span');
+                    charSpan.className = 'gsap-char';
+                    charSpan.textContent = char;
+                    scrollText.appendChild(charSpan);
+                }
+            }
+        }
+
+        // Initialize animation where color changes to dark
+        gsap.to('.gsap-char', {
+            color: '#1a1a1a',
+            stagger: 0.05,
+            scrollTrigger: {
+                trigger: '.built-for-farmers',
+                start: 'top+=400 bottom',
+                end: 'top 25%',
+                scrub: 1, // smooth scrubbing synced with scroll
+            }
+        });
+    }
+
     // Hero Swiper
     const heroSwiper = new Swiper('.hero-swiper', {
         loop: true,
