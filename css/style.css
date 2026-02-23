@@ -298,6 +298,16 @@ ul {
     border-color: var(--primary-red);
 }
 
+
+.about-hero {
+    margin: 30px;
+    border-radius: 30px !important;
+}
+
+.about-hero .overlay {
+    border-radius: 30px !important;
+}
+
 .btn-primary:hover {
     background-color: var(--bs-danger) !important;
     border-color: var(--bs-danger) !important;
@@ -369,17 +379,98 @@ ul {
 }
 
 /* Swiper Pagination Customization */
+.hero-section .swiper-pagination {
+    bottom: 10px !important;
+    background: rgba(85, 83, 74, 0.95);
+    /* A bit more brownish/grey */
+    padding: 6px 15px;
+    border-radius: 20px;
+    width: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+    z-index: 30;
+    line-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .swiper-pagination-bullet {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     background: rgba(255, 255, 255, 0.5);
     opacity: 1;
+    margin: 0 4px !important;
+    border-radius: 50%;
 }
 
 .swiper-pagination-bullet-active {
-    background: var(--primary-red) !important;
-    width: 30px;
-    border-radius: 10px;
+    background: transparent !important;
+    border: 2px solid #fff;
+    width: 14px;
+    height: 14px;
+    position: relative;
+}
+
+.swiper-pagination-bullet-active::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+/* Hero Bottom Shape (Tab Cutout) */
+.hero-bottom-shape {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    /* Matched the 35px height request */
+    z-index: 20;
+    display: flex;
+    pointer-events: none;
+}
+
+/* Create the apparent rounded bottom corners of the slider image */
+.hero-bottom-shape::before,
+.hero-bottom-shape::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    width: 50px;
+    height: 50px;
+    pointer-events: none;
+}
+
+.hero-bottom-shape::before {
+    left: 0;
+    background: radial-gradient(circle at top right, transparent 50px, #fff 50px);
+}
+
+.hero-bottom-shape::after {
+    right: 0;
+    background: radial-gradient(circle at top left, transparent 50px, #fff 50px);
+}
+
+.hero-bottom-shape .shape-left,
+.hero-bottom-shape .shape-right {
+    flex-grow: 1;
+    background-color: #fff;
+    height: 100%;
+}
+
+.hero-bottom-shape .shape-center {
+    width: 220px;
+    /* Matched the 220px width request */
+    height: 35px;
+    background-color: transparent;
+    line-height: 0;
 }
 
 /* Stage Products Section */
@@ -555,8 +646,9 @@ ul {
     word-wrap: break-word;
 }
 
-.text-muted {
-    color: rgb(33 37 41 / 27%);
+#about-scroll-text.text-muted,
+#gsap-scroll-text.text-muted {
+    color: rgb(33 37 41 / 15%) !important;
 }
 
 .gsap-char {
@@ -1217,7 +1309,7 @@ ul {
 
 .faq-section h2 {
     font-size: 2.5rem;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     text-align: center;
 }
 
@@ -1287,6 +1379,28 @@ ul {
     transform: translateY(-3px);
 }
 
+.watermark-bg {
+    position: absolute;
+    top: 0;
+    left: 42%;
+    /* transform: translateX(-50%); */
+    font-size: 6rem;
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(0 0 0 / 23%);
+    white-space: nowrap;
+    z-index: 6;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    margin-top: 2rem;
+}
+
+.vision-section .watermark-bg {
+    left: 0;
+    margin-top: -40px;
+}
+
 .watermark-text {
     font-size: 8rem;
     font-weight: 900;
@@ -1297,13 +1411,16 @@ ul {
     pointer-events: none;
     position: absolute;
     bottom: -40px;
-
-
     white-space: nowrap;
     z-index: 0;
 }
 
 @media (max-width: 768px) {
+    .watermark-bg {
+        font-size: 4rem;
+        margin-top: 0;
+    }
+
     .watermark-text {
         font-size: 4rem;
     }
@@ -1385,6 +1502,30 @@ ul {
     padding-top: 20px;
     margin-top: 40px;
     color: #999;
+}
+
+/* Experience Slider Navigation */
+.experience-nav-prev,
+.experience-nav-next {
+    width: 45px;
+    height: 45px;
+    border: 1px solid #777;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: transparent;
+    color: #333;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.experience-nav-prev:hover,
+.experience-nav-next:hover {
+    background-color: var(--primary-red);
+    color: #fff;
+    border-color: var(--primary-red);
 }
 
 /* =========================================
