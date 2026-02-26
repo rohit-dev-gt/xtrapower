@@ -67,6 +67,8 @@ ul {
     padding-top: 20px;
 }
 
+
+
 #main-header.homepage_header {
     top: 20px;
 }
@@ -1648,4 +1650,67 @@ ul {
 
 .related-products-section .row:hover .related-product-img-card {
     transform: translateY(-5px);
+}
+
+/* ==========================================
+   Advanced Interaction & Custom Cursor 
+   ========================================== */
+body {
+    /* Hide default cursor to use custom GSAP dot */
+    cursor: none;
+}
+
+/* Ensure links and buttons don't show the default pointer either */
+a,
+button,
+input[type="submit"] {
+    cursor: none;
+}
+
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    background-color: var(--primary-red);
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+}
+
+.custom-cursor.cursor-hover {
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    mix-blend-mode: difference;
+}
+
+/* Magnetic Buttons container fixes */
+.magnetic {
+    display: inline-block;
+}
+
+.farmer-card img,
+.stage-card {
+    transition: transform 0.1s ease-out;
+    /* Needed for JS Parallax smoothing */
+}
+
+/* On mobile devices, revert cursor to auto */
+@media (max-width: 1024px) {
+
+    body,
+    a,
+    button,
+    input[type="submit"] {
+        cursor: auto;
+    }
+
+    .custom-cursor {
+        display: none !important;
+    }
 }

@@ -214,6 +214,278 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ==========================================
+    // Ultra-Premium Webflow GSAP Animations
+    // ==========================================
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+
+        const customEase = "power4.out";
+        const slowEase = "expo.out";
+
+        // 1. Fluid Typography Reveals (Aggressive Clip-Paths with SplitType)
+        // This splits the text into lines and animates them up individually 
+        // behind a mask, exactly like Circle and other top Webflow sites.
+        const splitElements = document.querySelectorAll('.hero-content h1, .hero-content p, .section-header h2, .section-header p, .about-intro-section h2, .about-intro-section p');
+
+        if (typeof SplitType !== 'undefined' && splitElements.length > 0) {
+            splitElements.forEach(el => {
+                // Split text into lines
+                const textSplit = new SplitType(el, { types: 'lines' });
+
+                // Wrap each line in a container with overflow hidden to create the mask
+                textSplit.lines.forEach(line => {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.overflow = 'hidden';
+                    wrapper.style.display = 'block'; // Ensure it takes full width/behaves as block
+                    // padding to prevent cutting off descending letters like 'y' or 'g'
+                    wrapper.style.paddingBottom = '5px';
+                    line.parentNode.insertBefore(wrapper, line);
+                    wrapper.appendChild(line);
+                });
+
+                // Animate the actual lines up from below their new masked wrappers
+                gsap.from(textSplit.lines, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 90%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 100, // Distance to slide up
+                    opacity: 0,
+                    rotation: 2, // Very slight tilt on entrance
+                    duration: 1.2,
+                    stagger: 0.1, // Line by line cascade
+                    ease: customEase
+                });
+            });
+        }
+
+        // Buttons just fade and slide as normal
+        gsap.utils.toArray('.hero-content .btn').forEach((btn) => {
+            gsap.from(btn, {
+                scrollTrigger: {
+                    trigger: btn,
+                    start: "top 90%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 40,
+                opacity: 0,
+                duration: 1.2,
+                ease: slowEase,
+                delay: 0.4
+            });
+        });
+
+        // 2. Continuous Scrubbing Parallax for Backgrounds & Hero
+        if (document.querySelector('.hero-section')) {
+            // Parallax the hero background slider while scrolling
+            gsap.to('.hero-swiper', {
+                scrollTrigger: {
+                    trigger: '.hero-section',
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 1 // 1 second lag
+                },
+                y: 250, // Move the hero section down slower than scroll to create depth
+                opacity: 0.3
+            });
+        }
+
+        // 3. Image Zooms and Parallax on Scroll (Scrubbed)
+        // As you scroll down the page, the images inside cards slowly zoom out
+        gsap.utils.toArray('.farmer-card img, .product-item img, img[src*="about-"].img-fluid, .rounded-4 img, .video-bg').forEach(img => {
+            let wrapper = img.parentElement;
+            if (wrapper) wrapper.style.overflow = "hidden";
+
+            // Set initial scale to 1.3
+            gsap.set(img, { scale: 1.3, transformOrigin: "center center" });
+
+            // Scrub zoom out as we scroll past
+            gsap.to(img, {
+                scrollTrigger: {
+                    trigger: wrapper,
+                    start: "top bottom", // Start when card enters bottom
+                    end: "bottom top",   // End when card leaves top
+                    scrub: 1             // 1 second lag for smoothness
+                },
+                scale: 1,
+                y: 30, // Slight parallax y movement opposite to scroll
+                ease: "none"
+            });
+        });
+
+        // 4. Staggered Cascades (Cards & Grids)
+        // Huge swoops for grid items in 3D space
+        const cascadeGroups = [
+            '.farmers-grid',
+            '.top-products-swiper .swiper-wrapper', // Stagger inside swiper
+            '.stats-content',
+            '.reviews-swiper .swiper-wrapper',
+            'footer .row'
+        ];
+
+        cascadeGroups.forEach(groupSelector => {
+            const group = document.querySelector(groupSelector);
+            if (group) {
+                const children = group.children;
+                if (children.length > 0) {
+                    gsap.from(children, {
+                        scrollTrigger: {
+                            trigger: group,
+                            start: "top 80%",
+                            toggleActions: "play none none reverse"
+                        },
+                        y: 150, // Huge swoop up
+                        opacity: 0,
+                        scale: 0.9,
+                        rotationY: 15, // 3D swing inwards
+                        duration: 1.8,
+                        stagger: 0.15,
+                        transformOrigin: "left center",
+                        ease: slowEase
+                    });
+                }
+            }
+        });
+
+        // 5. Huge Background Text Scrubbing (Watermarks)
+        gsap.utils.toArray('.watermark-bg, .bg-heading').forEach(text => {
+            gsap.to(text, {
+                scrollTrigger: {
+                    trigger: text.parentElement,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 2 // High lag for heavy feel
+                },
+                x: () => window.innerWidth * 0.15, // Move dynamically based on screen width
+                ease: "none"
+            });
+        });
+
+        // 6. Stage Cards Specific Aggressive Reveal
+        gsap.utils.toArray('.stage-card').forEach(card => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 90%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 100,
+                opacity: 0,
+                scale: 0.8,
+                duration: 1.5,
+                ease: slowEase
+            });
+        });
+
+        // 7. Red Strip 3D Flip & Slide
+        if (document.querySelector('.red-strip-info')) {
+            gsap.from('.red-strip-info', {
+                scrollTrigger: {
+                    trigger: '.red-strip-info',
+                    start: "top 100%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 150,
+                opacity: 0,
+                rotationX: -90, // Full 3D flip over
+                transformOrigin: "center top",
+                duration: 1.5,
+                ease: "back.out(1.5)"
+            });
+        }
+    }
+
+    // ==========================================
+    // Advanced Interactions (Hover / Mouse / Cursor)
+    // ==========================================
+
+    // Disable standard interactions on touch devices
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+
+    if (!isTouchDevice) {
+        // A. Custom GSAP Cursor
+        const cursor = document.createElement('div');
+        cursor.classList.add('custom-cursor');
+        document.body.appendChild(cursor);
+
+        // Move cursor
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.15,
+                ease: "power2.out"
+            });
+        });
+
+        // Expand cursor on links and buttons
+        const hoverElements = document.querySelectorAll('a, button, .farmer-card, .stage-card, .btn');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('cursor-hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('cursor-hover');
+            });
+        });
+
+        // B. Magnetic Buttons & Links
+        const magneticElements = document.querySelectorAll('.btn-primary, .social-icons a, .social-icons-footer a');
+        magneticElements.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                gsap.to(el, {
+                    x: x * 0.4, // Magnetic pull strength
+                    y: y * 0.4,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+
+            el.addEventListener('mouseleave', () => {
+                gsap.to(el, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.7,
+                    ease: "elastic.out(1, 0.3)" // Snap back
+                });
+            });
+        });
+
+        // C. Inner Hover Parallax for Cards
+        // For image cards where we want the image to shift opposite to mouse
+        const parallaxCards = document.querySelectorAll('.farmer-card, .product-item, .info-card');
+        parallaxCards.forEach(card => {
+            const img = card.querySelector('img');
+            if (img) {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width - 0.5;
+                    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+                    gsap.to(img, {
+                        x: x * 20, // Move 20px max
+                        y: y * 20,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+                });
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(img, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.8,
+                        ease: "power2.out"
+                    });
+                });
+            }
+        });
+    }
+
 });
 
 // Product Gallery Swiper
